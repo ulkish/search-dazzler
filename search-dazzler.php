@@ -39,14 +39,15 @@
  * @return void
  */
 function search_dazzler_scripts() {
-    wp_enqueue_style( 'search-style',
-        plugin_dir_url( __FILE__ )
-        . 'assets/css/style.css'
-    );
 
-    wp_enqueue_style( 'search-style',
+    wp_enqueue_style( 'search-calendar-style',
         plugin_dir_url( __FILE__ )
         . 'assets/css/bulma-calendar.min.css'
+    );
+
+    wp_enqueue_style( 'search-plugin-style',
+        plugin_dir_url( __FILE__ )
+        . 'assets/css/style.css'
     );
 
     wp_enqueue_script( 'search-calendar', plugin_dir_url( __FILE__ )
@@ -61,17 +62,20 @@ add_action( 'wp_enqueue_scripts', 'search_dazzler_scripts' );
  */
 function search_dazzler_shortcode() {
 
-    $static_searchbar = '<div class="container">
-    <div class="">
-        <div class="column is-4 is-offset-4">
-            <div class="field">
+    $static_searchbar = 
+'<div class="columns">
+    <div class="column is-8 is-offset-2">
+        <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field">
+                <input id="checkIn" type="date">
+              </div>
+              <div class="field">
+                <input id="checkOut" type="date">
+              </div>
+              <div class="field">
                 <div class="control">
-                    <input id="" type="date">
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <div class="dropdown">
+                    <div class="dropdown is-active">
                         <div class="dropdown-trigger">
                           <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
                             <span>Habitaciones, adultos, niños</span>
@@ -109,14 +113,15 @@ function search_dazzler_shortcode() {
                     </div>
                 </div>
             </div>
-            <div class="field is-grouped is-grouped-centered">
+            <div class="field is-grouped">
                 <p class="control">
                   <a class="button is-primary">
                     Buscar
                   </a>
                 </p>
               </div>
-        </div>
+            </div>
+          </div>
     </div>
 </div>' . 
 
@@ -173,3 +178,18 @@ function inspect_scripts() {
     echo "</ul>";
 }
 // add_action( 'wp_print_styles', 'inspect_scripts' );
+
+/**
+ * Outputs a list of all the styles enqueued on the site.
+ *
+ * @return void
+ */
+function inspect_styles() {
+    global $wp_styles;
+    echo "<h2>Enqueued CSS Stylesheets</h2><ul>";
+    foreach( $wp_styles->queue as $handle ) :
+        echo "<li>" . $handle . "</li>";
+    endforeach;
+    echo "</ul>";
+}
+// add_action( 'wp_print_styles', 'inspect_styles' );
