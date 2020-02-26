@@ -65,15 +65,16 @@ add_action( 'wp_enqueue_scripts', 'search_dazzler_scripts' );
 function search_dazzler_shortcode() {
 
     $static_searchbar = 
-'<div class="columns">
+'<form action=' . admin_url( "admin-post.php" ) . ' method="POST" class="columns">
+    <input type="hidden" name="action" value="search_action_hook">
     <div class="column is-8 is-offset-2">
         <div class="field is-horizontal">
             <div class="field-body">
               <div class="field">
-                <input id="checkIn" type="date">
+                <input id="checkIn" name="checkIn" type="date">
               </div>
               <div class="field">
-                <input id="checkOut" type="date">
+                <input id="checkOut" name="checkOut" type="date">
               </div>
               <div class="field">
                 <div class="control">
@@ -107,25 +108,23 @@ function search_dazzler_shortcode() {
             <div class="field">
                 <div class="control">
                     <div class="select">
-                        <select>
-                          <option>lorem</option>
-                          <option>lorem</option>
-                          <option>lorem</option>
+                        <select name="select_two">
+                          <option>lorem1</option>
+                          <option>lorem2</option>
+                          <option>lorem3</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div class="field is-grouped">
                 <p class="control">
-                  <a class="button is-primary">
-                    Buscar
-                  </a>
+                  <input type="submit" name="submit" value="Submit!"class="button is-primary">
                 </p>
               </div>
             </div>
           </div>
     </div>
-</div>' . 
+</form>' . 
 
 // The JavaScript
 "<script>
@@ -164,29 +163,20 @@ if (element) {
     return $static_searchbar;
 }
 add_shortcode( 'search_dazzler', 'search_dazzler_shortcode' );
-
-function test_form_shortcode() {
-
-
-    ?>
-    <form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST">
-        <input type="hidden" name="action" value="search_action_hook">
-		<?php //wp_nonce_field( 'get_google_ids', 'google_ids_nonce' ); ?>
-        <input type="text" name="param" placeholder="Search">
-        <input type="submit" name="submit" value="Submit!">
-    </form>
-    <?php
-
-}
-add_shortcode( 'test_form', 'test_form_shortcode');
-
+/**
+ * Handles URL form submission data to create a link and redirect to it.
+ *
+ * @return void
+ */
 function handle_url_data() {
 
-    if (! empty($_POST["param"])) {
-        $param = $_POST["param"];
+    if (! empty($_POST["checkIn"]) && ! empty($_POST["checkOut"]) && ! empty($_POST["select_two"])) {
+        $check_in = $_POST["checkIn"];
+        $check_out = $_POST["checkOut"];
 
-        // header("Location: " . 'https://www.google.com/search?q=' . $param);
-        wp_redirect( 'https://www.google.com/search?q=' . $param );
+        $select_two = $_POST["select_two"];
+        wp_redirect( 'https://www.google.com/search?q='
+        . $check_in . '+' . $check_out . '+' . $select_two );
     }
 }
 add_action('admin_post_nopriv_search_action_hook', 'handle_url_data');
@@ -200,9 +190,11 @@ add_action('admin_post_search_action_hook', 'handle_url_data');
 function inspect_scripts() {
     global $wp_scripts;
     echo "<h1>Enqueued JavaScript files:</h1><ul>";
-    foreach( $wp_scripts->queue as $handle ) :
+
+    foreach( $wp_scripts->queue as $handle ) {
         echo "<li>" . $handle . "</li>";
-    endforeach;
+    }
+
     echo "</ul>";
 }
 // add_action( 'wp_print_styles', 'inspect_scripts' );
