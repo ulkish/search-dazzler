@@ -31,8 +31,9 @@
 // - Load search bar JavaScript. [DONE]
 // - Load search bar CSS. [DONE]
 // - Create shortcode to display search bar on. [DONE]
-// - Fix CSS on search bar.
-// - Transform search bar into a form in order to make it usable.
+// - Fix CSS on search bar. [IN PROGRESS]
+// - Transform search bar into a form in order to make it usable. [DONE]
+// - 
 
 
 /**
@@ -171,12 +172,15 @@ add_shortcode( 'search_dazzler', 'search_dazzler_shortcode' );
 function handle_url_data() {
 
     if (! empty($_POST["checkIn"]) && ! empty($_POST["checkOut"]) && ! empty($_POST["select_two"])) {
-        $check_in = $_POST["checkIn"];
-        $check_out = $_POST["checkOut"];
+        $check_in = str_replace("/", "-", $_POST["checkIn"]);
+        $check_out = str_replace("/", "-", $_POST["checkOut"]);
 
         $select_two = $_POST["select_two"];
-        wp_redirect( 'https://www.google.com/search?q='
-        . $check_in . '+' . $check_out . '+' . $select_two );
+        // wp_redirect( 'https://www.google.com/search?q=' . $check_in . '+' . $check_out . '+' . $select_two );
+
+        $complete_link = 'https://www.wyndhamhotels.com/dazzler/asuncion-paraguay/dazzler-hotel-asuncion/rooms-rates?brand_id=DZ&Brand_tier=hr&hotel_id=51090&checkin_date=02-26-2020&checkout_date=02-27-2020&rooms=1&adults=2&children=0&ratePlan=&CID=IS%3ADZ%3A20180730%3ADAZZLERSITE%3ABARRAMOTOREN%3ANA%3ANA%3A51090%3AEN-US';
+
+        wp_redirect($complete_link);
     }
 }
 add_action('admin_post_nopriv_search_action_hook', 'handle_url_data');
