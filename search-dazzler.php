@@ -165,6 +165,32 @@ if (element) {
 }
 add_shortcode( 'search_dazzler', 'search_dazzler_shortcode' );
 
+function test_form_shortcode() {
+
+
+    ?>
+    <form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST">
+        <input type="hidden" name="action" value="search_action_hook">
+		<?php //wp_nonce_field( 'get_google_ids', 'google_ids_nonce' ); ?>
+        <input type="text" name="param" placeholder="Search">
+        <input type="submit" name="submit" value="Submit!">
+    </form>
+    <?php
+
+}
+add_shortcode( 'test_form', 'test_form_shortcode');
+
+function handle_url_data() {
+
+    if (! empty($_POST["param"])) {
+        $param = $_POST["param"];
+
+        // header("Location: " . 'https://www.google.com/search?q=' . $param);
+        wp_redirect( 'https://www.google.com/search?q=' . $param );
+    }
+}
+add_action('admin_post_nopriv_search_action_hook', 'handle_url_data');
+add_action('admin_post_search_action_hook', 'handle_url_data');
 
 /**
  * Outputs a list of all the scripts enqueued on the site.
