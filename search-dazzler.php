@@ -30,7 +30,9 @@
 // === TODO LIST ===
 // - Load search bar JavaScript. [DONE]
 // - Load search bar CSS. [DONE]
-// - Create shortcode to display search bar on.
+// - Create shortcode to display search bar on. [DONE]
+// - Fix CSS on search bar.
+// - Transform search bar into a form in order to make it usable.
 
 
 /**
@@ -165,7 +167,7 @@ add_shortcode( 'search_dazzler', 'search_dazzler_shortcode' );
 
 
 /**
- * Outputs a list of all the styles enqueued on the site.
+ * Outputs a list of all the scripts enqueued on the site.
  *
  * @return void
  */
