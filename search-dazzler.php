@@ -54,6 +54,122 @@ function search_dazzler_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'search_dazzler_scripts' );
 
+/**
+ * Adds our custom shortcode to output a search bar in the site.
+ *
+ * @return void
+ */
 function search_dazzler_shortcode() {
 
+    $static_searchbar = '<div class="container">
+    <div class="">
+        <div class="column is-4 is-offset-4">
+            <div class="field">
+                <div class="control">
+                    <input id="" type="date">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <div class="dropdown">
+                        <div class="dropdown-trigger">
+                          <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                            <span>Habitaciones, adultos, niños</span>
+                            <span class="icon is-small">
+                              <i class="fas fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                          </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                          <div class="dropdown-content">
+                            <a href="#" class="dropdown-item">
+                              HABITACIONES
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a class="dropdown-item">
+                              ADULTOS
+                            </a>
+                            <hr class="dropdown-divider">
+                            <div href="#" class="dropdown-item">
+                              NIÑOS
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <div class="select">
+                        <select>
+                          <option>lorem</option>
+                          <option>lorem</option>
+                          <option>lorem</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-grouped is-grouped-centered">
+                <p class="control">
+                  <a class="button is-primary">
+                    Buscar
+                  </a>
+                </p>
+              </div>
+        </div>
+    </div>
+</div>' . 
+
+// The JavaScript
+"<script>
+    var options = {
+        type: 'date',
+        labelFrom: 'Check-in',
+        labelTo: 'Check-out',
+        // displayMode: 'inline',
+        isRange: 'true',
+        closeOnSelect: 'false'
+    }
+
+    bulmaCalendar.attach('#checkIn', { labelFrom: 'Check-in' });
+    bulmaCalendar.attach('#checkOut', { labelFrom: 'Check-Out' });
+
+    var calendars = bulmaCalendar.attach('[type=" . '"date"'. "]', options);
+
+// Loop on each calendar initialized
+for(var i = 0; i < calendars.length; i++) {
+	// Add listener to date:selected event
+	calendars[i].on('select', date => {
+		console.log(date);
+	});
 }
+
+// To access to bulmaCalendar instance of an element
+var element = document.querySelector('#my-element');
+if (element) {
+	// bulmaCalendar instance is available as element.bulmaCalendar
+	element.bulmaCalendar.on('select', function(datepicker) {
+		console.log(datepicker.data.value());
+	});
+}
+</script>";
+
+    return $static_searchbar;
+}
+add_shortcode( 'search_dazzler', 'search_dazzler_shortcode' );
+
+
+/**
+ * Outputs a list of all the styles enqueued on the site.
+ *
+ * @return void
+ */
+function inspect_scripts() {
+    global $wp_scripts;
+    echo "<h1>Enqueued JavaScript files:</h1><ul>";
+    foreach( $wp_scripts->queue as $handle ) :
+        echo "<li>" . $handle . "</li>";
+    endforeach;
+    echo "</ul>";
+}
+// add_action( 'wp_print_styles', 'inspect_scripts' );
