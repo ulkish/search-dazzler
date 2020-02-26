@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link href="bulma-calendar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="bulma-calendar.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="">
+                <div class="column is-10 is-offset-1">
+                    <nav class="navbar" role="navigation" aria-label="main navigation">
+                        <div class="navbar-brand">
+                            <p class="navbar-item is-size-7">
+                                CENTRAL DE RESERVAS: (+54 11) 5217 5799 / RECEPCIÓN: (+598) 2714 40 90
+                            </p>
+                        </div>
+                    
+                        <div id="navbarBasicExample" class="navbar-menu">
+                        <div class="navbar-end">
+                            <div class="navbar-item has-dropdown is-hoverable is-size-7">
+                                <a class="navbar-link">
+                                ESPLENDOR BY WYNDHAM
+                                </a>
+                        
+                                <div class="navbar-dropdown">
+                                <a class="navbar-item">
+                                    Lorem
+                                </a>
+                                <a class="navbar-item">
+                                    Lorem
+                                </a>
+                                <a class="navbar-item">
+                                    Lorem
+                                </a>
+                                <hr class="navbar-divider">
+                                <a class="navbar-item">
+                                    Lorem
+                                </a>
+                                </div>
+                            </div>
+
+                            <div class="navbar-item is-size-7">
+                                <div class="select">
+                                    <select>
+                                    <option>Español</option>
+                                    <option>Ingles</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </nav>
+                    <nav class="navbar principal" role="navigation" aria-label="main navigation">
+                        <div class="navbar-brand">
+                        <a class="navbar-item" href="https://bulma.io">
+                            <img src="images/logo.png" width="112" height="28">
+                        </a>
+                        </div>
+                    
+                        <div id="navbarBasicExample" class="navbar-menu">
+                        <div class="navbar-end">
+                            <div class="navbar-item">
+                                <a>Habitaciones</a>
+                            </div>
+                            <div class="navbar-item">
+                                <a>Servicios</a>
+                            </div>
+                            <div class="navbar-item">
+                                <a>Ubicacion</a>
+                            </div>
+                            <div class="navbar-item">
+                                <a>Eventos</a>
+                            </div>
+                            <div class="navbar-item">
+                                <a>Promociones</a>
+                            </div>
+                            <div class="navbar-item">
+                                <a>Gastronomia</a>
+                            </div>
+                            <div class="navbar-item">
+                                <a>Contacto</a>
+                            </div>
+                        </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="columns">
+        <div class="column is-6 is-offset-3 has-text-centered">
+            <p class="subtitle is-5">DAZZLER ASUNCIÓN</p>
+            <p class="title is-1">Viví lo mejor de Asunción</p>
+            <p class="subtitle is-6">El hotel ubicado en la zona más trendy de la ciudad</p>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column is-8 is-offset-2">
+            <div class="field is-horizontal">
+                <div class="field-body">
+                  <div class="field">
+                    <input id="checkIn" type="date">
+                  </div>
+                  <div class="field">
+                    <input id="checkOut" type="date">
+                  </div>
+                  <div class="field">
+                    <div class="control">
+                        <div class="dropdown is-active">
+                            <div class="dropdown-trigger">
+                              <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                <span>Habitaciones, adultos, niños</span>
+                                <span class="icon is-small">
+                                  <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                              </button>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                              <div class="dropdown-content">
+                                <a href="#" class="dropdown-item">
+                                  HABITACIONES
+                                </a>
+                                <hr class="dropdown-divider">
+                                <a class="dropdown-item">
+                                  ADULTOS
+                                </a>
+                                <hr class="dropdown-divider">
+                                <div href="#" class="dropdown-item">
+                                  NIÑOS
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <div class="select">
+                            <select>
+                              <option>lorem</option>
+                              <option>lorem</option>
+                              <option>lorem</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <p class="control">
+                      <a class="button is-primary">
+                        Buscar
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="columns" style="background-color: #F2F2F2;">
+        <div class="column is-6 is-offset-3 has-text-centered">
+            <p class="title is-3">Open house hotels, inspired by the streets <br> and scenes that surround them.</p>
+            <a class="subtitle is-6">Ver galeria ></a>
+        </div>
+    </div>
+
+
+<script>
+    var options = {
+        type: 'date',
+        labelFrom: 'Check-in',
+    labelTo: 'Check-out',
+        // displayMode: 'inline',
+        // isRange: 'true',
+        // closeOnSelect: 'false'
+    }
+
+    bulmaCalendar.attach('#checkIn', { labelFrom: 'Check-in', });
+    bulmaCalendar.attach('#checkOut', { labelFrom: 'Check-out', });
+    var calendars = bulmaCalendar.attach('[type="date"]', options);
+
+// Loop on each calendar initialized
+for(var i = 0; i < calendars.length; i++) {
+	// Add listener to date:selected event
+	calendars[i].on('select', date => {
+		console.log(date);
+	});
+}
+
+// To access to bulmaCalendar instance of an element
+var element = document.querySelector('#my-element');
+if (element) {
+	// bulmaCalendar instance is available as element.bulmaCalendar
+	element.bulmaCalendar.on('select', function(datepicker) {
+		console.log(datepicker.data.value());
+	});
+}
+</script>
+</body>
+</html>

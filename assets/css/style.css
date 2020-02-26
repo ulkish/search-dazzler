@@ -1,0 +1,45 @@
+.navbar-item img {
+    max-height: 3rem;
+}
+
+a {
+    color: black
+}
+
+.navbar.principal {
+  border-top: 1px solid black;
+}
+
+.select {
+  width: 100%;
+}
+.select select {
+  width: 100%;
+}
+
+.dropdown .dropdown-trigger button {
+  width: 100%;
+  background-color: #fff;
+  border-color: #dbdbdb;
+  border-width: 1px;
+  color: #363636;
+  cursor: pointer;
+  justify-content: left;
+  padding-bottom: calc(.5em - 1px);
+  padding-top: calc(.5em - 1px);
+  text-align: center;
+  white-space: nowrap;
+  padding-left: none;
+}
+
+.dropdown .dropdown-trigger{
+  width: 100%;
+}
+
+.dropdown {
+  width: 100%;
+}
+
+.dropdown-menu {
+  width: 100%;
+}
