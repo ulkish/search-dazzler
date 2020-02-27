@@ -1,9 +1,9 @@
 .navbar-item img {
-    max-height: 3rem;
+  max-height: 3rem;
 }
 
 a {
-    color: black
+  color: black
 }
 
 .navbar.principal {
@@ -30,6 +30,9 @@ a {
   text-align: center;
   white-space: nowrap;
   padding-left: none;
+  display: flex;
+  width: 100%;
+  justify-content: space-between
 }
 
 .dropdown .dropdown-trigger{
@@ -42,4 +45,28 @@ a {
 
 .dropdown-menu {
   width: 100%;
+}
+
+.dropdown-trigger {
+  width: 100%
+}
+
+p.hab-box {
+  background-color: lightgrey;
+  padding: 1px 5px 1px 5px;
+}
+
+.hab-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline:none;
+}
+
+.hab-button label {
+  cursor: pointer;
+}
+
+.showEspecials {
+  display:none;
 }

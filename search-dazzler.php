@@ -53,11 +53,14 @@ function search_dazzler_scripts() {
         . 'assets/css/style.css'
     );
 
-    wp_enqueue_script( 'search-calendar', plugin_dir_url( __FILE__ )
-        . 'assets/js/bulma-calendar.min.js');
+    wp_enqueue_script( 'search-calendar-js', plugin_dir_url( __FILE__ )
+        . 'assets/js/bulma-calendar.min.js', array(), false, true);
 
     wp_enqueue_script( 'search-extra-js', plugin_dir_url( __FILE__ )
-        . 'assets/js/search-extra.js');
+        . 'assets/js/search-extra.js', array(), false, true );
+
+        wp_enqueue_script( 'calendar-extra-js', plugin_dir_url( __FILE__ )
+        . 'assets/js/calendar-extra.js', array(), false, true );
 }
 add_action( 'wp_enqueue_scripts', 'search_dazzler_scripts' );
 
@@ -69,210 +72,127 @@ add_action( 'wp_enqueue_scripts', 'search_dazzler_scripts' );
 function search_dazzler_shortcode() {
 
     $static_searchbar = 
-'<form action=' . admin_url( "admin-post.php" ) . ' method="POST" class="columns">
+'<form action=' . admin_url( "admin-post.php" ) . ' method="POST" class="columns" id="app">
     <input type="hidden" name="action" value="search_action_hook">
     <div class="column is-8 is-offset-2">
-        <div class="field is-horizontal">
-            <div class="field-body">
-              <div class="field">
-                <input id="checkIn" name="checkIn" type="date">
-              </div>
-              <div class="field">
-                <input id="checkOut" name="checkOut" type="date">
-              </div>
-              <div class="field">
-                <div class="control">
-                    <div class="dropdown">
-                        <div class="dropdown-trigger">
-                          <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                            <span>Habitaciones, adultos, niños</span>
-                            <span class="icon is-small">
-                              <i class="fas fa-angle-down" aria-hidden="true"></i>
-                            </span>
+    <div class="field is-horizontal">
+        <div class="field-body">
+          <div class="field">
+            <input id="checkIn" name="checkIn" type="date">
+          </div>
+          <div class="field">
+            <input id="checkOut" name="checkOut" type="date">
+          </div>
+          <div class="field">
+            <div class="control">
+                <div id="habDropdown" class="dropdown">
+                    <div class="dropdown-trigger">
+                      <button type="button" onclick="toggleActive()" class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span>Habitaciones, adultos, niños</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                      <div class="dropdown-content">
+                        <div href="#" class="dropdown-item">
+                          HABITACIONES
+                          <div style="float: right; display: flex">
+                            <button type="button" data-model="rooms" name="add" class="hab-button">
+                                <label for="" class="label">+</label>
+                            </button>
+                            <p class="hab-box" data-binding="rooms">1</p>
+                            <button type="button" data-model="rooms" name="remove" class="hab-button" >
+                                <label for="" class="label">-</label>
+                            </button>
+                          </div>
+                        </div>
+                        <hr class="dropdown-divider">
+                        <div href="#" class="dropdown-item">
+                          ADULTOS
+                          <div style="float: right; display: flex">
+                          <button type="button" class="hab-button" data-model="adults" name="add">
+                          <label for="" class="label">+</label>
+                          </button>
+                          <p class="hab-box" data-binding="adults">1</p>
+                          <button type="button" class="hab-button" data-model="adults" name="remove">
+                            <label for="" class="label">-</label>
                           </button>
                         </div>
-                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                          <div class="dropdown-content">
-                            <a href="#" class="dropdown-item">
-                              HABITACIONES
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a class="dropdown-item">
-                              ADULTOS
-                            </a>
-                            <hr class="dropdown-divider">
-                            <div href="#" class="dropdown-item">
-                              NIÑOS
-                            </div>
-                          </div>
+                        </div>
+                        <hr class="dropdown-divider">
+                        <div href="#" class="dropdown-item">
+                          NIÑOS
+                          <div style="float: right; display: flex"> 
+                          <button type="button"class="hab-button" data-model="childs" name="add">
+                          <label for="" class="label">+</label>
+                          </button>
+                          <p class="hab-box" data-binding="childs">1</p>
+                          <button type="button" class="hab-button" data-model="childs" name="remove">
+                            <label for="" class="label">-</label>
+                          </button>
+                        </div>
                         </div>
                       </div>
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <div class="select">
-                        <select name="select_two">
-                          <option>lorem1</option>
-                          <option>lorem2</option>
-                          <option>lorem3</option>
-                        </select>
                     </div>
-                </div>
+                  </div>
             </div>
-            <div class="field is-grouped">
-                <p class="control">
-                  <input type="submit" name="submit" value="Submit!"class="button is-primary">
-                </p>
-              </div>
-            </div>
-          </div>
-    </div>
-</form>' . 
-
-'<form action=' . admin_url( "admin-post.php" ) . ' method="POST" class="columns">
-    <input type="hidden" name="action" value="search_action_hook">
-        <div class="column is-8 is-offset-2">
-            <div class="field is-horizontal">
-                <div class="field-body">
-                  <div class="field">
-                    <input id="checkIn" name="checkIn" type="date">
-                  </div>
-                  <div class="field">
-                    <input id="checkOut" name="checkOut" type="date">
-                  </div>
-                  <div class="field">
-                    <div class="control">
-                        <div id="habDropdown" class="dropdown">
-                            <div class="dropdown-trigger">
-                              <button onclick="toggleActive()" class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                                <span>Habitaciones, adultos, niños</span>
-                                <span class="icon is-small">
-                                  <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                </span>
-                              </button>
-                            </div>
-                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                              <div class="dropdown-content">
-                                <div href="#" class="dropdown-item">
-                                  HABITACIONES
-                                  <div style="float: right; display: flex">
-                                    <button data-model="rooms" name="add" class="hab-button">
-                                        <label for="" class="label">+</label>
-                                    </button>
-                                    <p class="hab-box" data-binding="rooms">1</p>
-                                    <button data-model="rooms" name="remove" class="hab-button" >
-                                        <label for="" class="label">-</label>
-                                    </button>
-                                  </div>
-                                </div>
-                                <hr class="dropdown-divider">
-                                <div href="#" class="dropdown-item">
-                                  ADULTOS
-                                  <div style="float: right; display: flex">
-                                  <button class="hab-button" data-model="adults" name="add">
-                                  <label for="" class="label">+</label>
-                                  </button>
-                                  <p class="hab-box" data-binding="adults">1</p>
-                                  <button class="hab-button" data-model="adults" name="remove">
-                                    <label for="" class="label">-</label>
-                                  </button>
-                                </div>
-                                </div>
-                                <hr class="dropdown-divider">
-                                <div href="#" class="dropdown-item">
-                                  NIÑOS
-                                  <div style="float: right; display: flex">
-                                  <button class="hab-button" data-model="childs" name="add">
-                                  <label for="" class="label">+</label>
-                                  </button>
-                                  <p class="hab-box" data-binding="childs">1</p>
-                                  <button class="hab-button" data-model="childs" name="remove">
-                                    <label for="" class="label">-</label>
-                                  </button>
-                                </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <div id="habDropdown" class="dropdown is-active">
-                            <div class="dropdown-trigger">
-                              <button onclick="" class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                                <span>Tarifas Especiales</span>
-                                <span class="icon is-small">
-                                  <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                </span>
-                              </button>
-                            </div>
-                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                              <div class="dropdown-content">
-                                <div href="#" class="dropdown-item">
-                                  <a>Puntos de Wyndham Rewards</a>
-                                </div>
-                                <hr class="dropdown-divider">
-                                <div href="#" class="dropdown-item">
-                                <a onclick="toggleCorpCode()"> Código Corporativo </a> <br>
-                                 <input id="corpCode" class="input showEspecials" type="text">
-                                </div>
-                                <hr class="dropdown-divider">
-                                <div href="#" class="dropdown-item">
-                                 <a onclick="toggleGroupCode()">Código Grupo</a> <br>
-                                 <input id="groupCode" class="input showEspecials" type="text">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-                <div class="field is-grouped">
-                    <p class="control">
-                      <a class="button is-primary">
-                        Buscar
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </div>
         </div>
-    </form>' .
+        <div class="field">
+            <div class="control">
+                <div id="habDropdown" class="dropdown">
+                    <div class="dropdown-trigger">
+                      <button type="button" onclick="" class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span>Tarifas Especiales</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                      <div class="dropdown-content">
+                        <div href="#" class="dropdown-item">
+                          <a>Puntos de Wyndham Rewards</a>
+                        </div>
+                        <hr class="dropdown-divider">
+                        <div href="#" class="dropdown-item">
+                        <a onclick="toggleCorpCode()"> Código Corporativo </a> <br>
+                         <input id="corpCode" class="input showEspecials" type="text">
+                        </div>
+                        <hr class="dropdown-divider">
+                        <div href="#" class="dropdown-item">
+                         <a onclick="toggleGroupCode()">Código Grupo</a> <br>
+                         <input id="groupCode" class="input showEspecials" type="text">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div class="field is-grouped">
+            <p class="control">
+                <div>
+                <button name="submit" value="Buscar" class="button is-primary">{{ message }}</button>
+                </div>
+            </p>
+          </div>
+        </div>
+      </div>
+      <p > {{ message }}</p>
+</div>
+</form>
+<script>
+var app = new Vue({
+    el: "#app",
+    data: {
+      message: "Hello Vue!"
+    }
+  })
+</script>' .
 
 // Necessary JavaScript for the calendar.
-"<script>
-    var options = {
-        type: 'date',
-        labelFrom: 'Check-in',
-        labelTo: 'Check-out',
-        // displayMode: 'inline',
-        isRange: 'true',
-        closeOnSelect: 'false'
-    }
-
-    bulmaCalendar.attach('#checkIn', { labelFrom: 'Check-in' });
-    bulmaCalendar.attach('#checkOut', { labelFrom: 'Check-Out' });
-
-    var calendars = bulmaCalendar.attach('[type=" . '"date"'. "]', options);
-
-// Loop on each calendar initialized
-for(var i = 0; i < calendars.length; i++) {
-	// Add listener to date:selected event
-	calendars[i].on('select', date => {
-		console.log(date);
-	});
-}
-
-// To access to bulmaCalendar instance of an element
-var element = document.querySelector('#my-element');
-if (element) {
-	// bulmaCalendar instance is available as element.bulmaCalendar
-	element.bulmaCalendar.on('select', function(datepicker) {
-		console.log(datepicker.data.value());
-	});
-}
-</script>";
+"";
 
     return $static_searchbar;
 }
@@ -314,7 +234,7 @@ function handle_form_data() {
     //     // Example link: 'https://www.wyndhamhotels.com/dazzler/asuncion-paraguay/dazzler-hotel-asuncion/rooms-rates?brand_id=DZ&Brand_tier=hr&hotel_id=51090&checkin_date=02-26-2020&checkout_date=02-27-2020&rooms=1&adults=2&children=0&ratePlan=&CID=IS%3ADZ%3A20180730%3ADAZZLERSITE%3ABARRAMOTOREN%3ANA%3ANA%3A51090%3AEN-US';
     // }
 
-    $complete_link = 'https://www.wyndhamhotels.com/dazzler/asuncion-paraguay/dazzler-hotel-asuncion/rooms-rates?brand_id=DZ&checkInDate='.$check_in.'&checkOutDate='.$check_out.'&useWRPoints=false&children='.$children.'&adults='.$adults.'&rooms='.$rooms.'';
+    $complete_link = 'https://www.wyndhamhotels.com/dazzler/asuncion-paraguay/dazzler-hotel-asuncion/rooms-rates?brand_id=DZ&checkInDate='.$check_in.'&checkOutDate='.$check_out.'&useWRPoints=false&children='.$children.'&adults='.$adults.'&rooms='.$rooms;
 
     wp_redirect($complete_link);
 }
@@ -352,3 +272,14 @@ function inspect_styles() {
     echo "</ul>";
 }
 // add_action( 'wp_print_styles', 'inspect_styles' );
+
+
+/**
+ * Echoes the CDN for Bulma.css and Font Awesome 5 on the site header.
+ *
+ * @return void
+ */
+function load_cdns() {
+    echo '<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>';
+}
+add_action( 'wp_head', 'load_cdns' );

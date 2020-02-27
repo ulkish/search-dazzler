@@ -89,3 +89,5 @@ const createState = (state) => {
       document.querySelector('[data-binding="childs"]').innerHTML = state['childs'];
       document.querySelector('[data-binding="childs"]').value = state['childs'];
   };
+
+  render()
