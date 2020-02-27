@@ -79,7 +79,7 @@ function search_dazzler_shortcode() {
               </div>
               <div class="field">
                 <div class="control">
-                    <div class="dropdown is-active">
+                    <div class="dropdown">
                         <div class="dropdown-trigger">
                           <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
                             <span>Habitaciones, adultos, niños</span>
@@ -127,7 +127,7 @@ function search_dazzler_shortcode() {
     </div>
 </form>' . 
 
-// The JavaScript
+// The JavaScript.
 "<script>
     var options = {
         type: 'date',
@@ -164,27 +164,49 @@ if (element) {
     return $static_searchbar;
 }
 add_shortcode( 'search_dazzler', 'search_dazzler_shortcode' );
+
 /**
- * Handles URL form submission data to create a link and redirect to it.
+ * Handles form submission data to create a link and redirect to it.
  *
  * @return void
  */
-function handle_url_data() {
+function handle_form_data() {
 
-    if (! empty($_POST["checkIn"]) && ! empty($_POST["checkOut"]) && ! empty($_POST["select_two"])) {
-        $check_in = str_replace("/", "-", $_POST["checkIn"]);
-        $check_out = str_replace("/", "-", $_POST["checkOut"]);
+    // Default parameter values.
+    $rooms    = '1';
+    $adults   = '1';
+    $children = '0';
 
-        $select_two = $_POST["select_two"];
-        // wp_redirect( 'https://www.google.com/search?q=' . $check_in . '+' . $check_out . '+' . $select_two );
-
-        $complete_link = 'https://www.wyndhamhotels.com/dazzler/asuncion-paraguay/dazzler-hotel-asuncion/rooms-rates?brand_id=DZ&Brand_tier=hr&hotel_id=51090&checkin_date=02-26-2020&checkout_date=02-27-2020&rooms=1&adults=2&children=0&ratePlan=&CID=IS%3ADZ%3A20180730%3ADAZZLERSITE%3ABARRAMOTOREN%3ANA%3ANA%3A51090%3AEN-US';
-
-        wp_redirect($complete_link);
+    if (empty($_POST["checkIn"])) {
+        $check_in = date("m-d-Y");
+    } else {
+        // Preparing data for appending.
+        $clean_check_in = sanitize_text_field($_POST["checkIn"]);
+        $check_in       = str_replace("/", "-", $clean_check_in);
     }
+
+    if (empty($_POST["checkOut"])) {
+        $check_out = date("m-d-Y", strtotime("+1 day"));
+    } else {
+        // Preparing data for appending.
+        $clean_check_out = sanitize_text_field($_POST["chechOut"]);
+        $check_out       = str_replace("/", "-", $clean_check_out);
+    }
+
+    // if (! empty($_POST["checkIn"]) && ! empty($_POST["checkOut"]) && ! empty($_POST["select_two"])) {
+    //     $check_in = str_replace("/", "-", $_POST["checkIn"]);
+    //     $check_out = str_replace("/", "-", $_POST["checkOut"]);
+    //     $select_two = $_POST["select_two"];
+
+    //     // Example link: 'https://www.wyndhamhotels.com/dazzler/asuncion-paraguay/dazzler-hotel-asuncion/rooms-rates?brand_id=DZ&Brand_tier=hr&hotel_id=51090&checkin_date=02-26-2020&checkout_date=02-27-2020&rooms=1&adults=2&children=0&ratePlan=&CID=IS%3ADZ%3A20180730%3ADAZZLERSITE%3ABARRAMOTOREN%3ANA%3ANA%3A51090%3AEN-US';
+    // }
+
+    $complete_link = 'https://www.wyndhamhotels.com/dazzler/asuncion-paraguay/dazzler-hotel-asuncion/rooms-rates?brand_id=DZ&checkInDate='.$check_in.'&checkOutDate='.$check_out.'&useWRPoints=false&children='.$children.'&adults='.$adults.'&rooms='.$rooms.'';
+
+    wp_redirect($complete_link);
 }
-add_action('admin_post_nopriv_search_action_hook', 'handle_url_data');
-add_action('admin_post_search_action_hook', 'handle_url_data');
+add_action('admin_post_nopriv_search_action_hook', 'handle_form_data');
+add_action('admin_post_search_action_hook', 'handle_form_data');
 
 /**
  * Outputs a list of all the scripts enqueued on the site.
