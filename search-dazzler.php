@@ -55,6 +55,9 @@ function search_dazzler_scripts() {
 
     wp_enqueue_script( 'search-calendar', plugin_dir_url( __FILE__ )
         . 'assets/js/bulma-calendar.min.js');
+
+    wp_enqueue_script( 'search-extra-js', plugin_dir_url( __FILE__ )
+        . 'assets/js/search-extra.js');
 }
 add_action( 'wp_enqueue_scripts', 'search_dazzler_scripts' );
 
@@ -127,7 +130,117 @@ function search_dazzler_shortcode() {
     </div>
 </form>' . 
 
-// The JavaScript.
+'<form action=' . admin_url( "admin-post.php" ) . ' method="POST" class="columns">
+    <input type="hidden" name="action" value="search_action_hook">
+        <div class="column is-8 is-offset-2">
+            <div class="field is-horizontal">
+                <div class="field-body">
+                  <div class="field">
+                    <input id="checkIn" name="checkIn" type="date">
+                  </div>
+                  <div class="field">
+                    <input id="checkOut" name="checkOut" type="date">
+                  </div>
+                  <div class="field">
+                    <div class="control">
+                        <div id="habDropdown" class="dropdown">
+                            <div class="dropdown-trigger">
+                              <button onclick="toggleActive()" class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                <span>Habitaciones, adultos, niños</span>
+                                <span class="icon is-small">
+                                  <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                              </button>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                              <div class="dropdown-content">
+                                <div href="#" class="dropdown-item">
+                                  HABITACIONES
+                                  <div style="float: right; display: flex">
+                                    <button data-model="rooms" name="add" class="hab-button">
+                                        <label for="" class="label">+</label>
+                                    </button>
+                                    <p class="hab-box" data-binding="rooms">1</p>
+                                    <button data-model="rooms" name="remove" class="hab-button" >
+                                        <label for="" class="label">-</label>
+                                    </button>
+                                  </div>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <div href="#" class="dropdown-item">
+                                  ADULTOS
+                                  <div style="float: right; display: flex">
+                                  <button class="hab-button" data-model="adults" name="add">
+                                  <label for="" class="label">+</label>
+                                  </button>
+                                  <p class="hab-box" data-binding="adults">1</p>
+                                  <button class="hab-button" data-model="adults" name="remove">
+                                    <label for="" class="label">-</label>
+                                  </button>
+                                </div>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <div href="#" class="dropdown-item">
+                                  NIÑOS
+                                  <div style="float: right; display: flex">
+                                  <button class="hab-button" data-model="childs" name="add">
+                                  <label for="" class="label">+</label>
+                                  </button>
+                                  <p class="hab-box" data-binding="childs">1</p>
+                                  <button class="hab-button" data-model="childs" name="remove">
+                                    <label for="" class="label">-</label>
+                                  </button>
+                                </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <div id="habDropdown" class="dropdown is-active">
+                            <div class="dropdown-trigger">
+                              <button onclick="" class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                <span>Tarifas Especiales</span>
+                                <span class="icon is-small">
+                                  <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                              </button>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                              <div class="dropdown-content">
+                                <div href="#" class="dropdown-item">
+                                  <a>Puntos de Wyndham Rewards</a>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <div href="#" class="dropdown-item">
+                                <a onclick="toggleCorpCode()"> Código Corporativo </a> <br>
+                                 <input id="corpCode" class="input showEspecials" type="text">
+                                </div>
+                                <hr class="dropdown-divider">
+                                <div href="#" class="dropdown-item">
+                                 <a onclick="toggleGroupCode()">Código Grupo</a> <br>
+                                 <input id="groupCode" class="input showEspecials" type="text">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <p class="control">
+                      <a class="button is-primary">
+                        Buscar
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </form>' .
+
+// Necessary JavaScript for the calendar.
 "<script>
     var options = {
         type: 'date',
